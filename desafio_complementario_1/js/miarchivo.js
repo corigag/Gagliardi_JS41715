@@ -1,29 +1,33 @@
 
 // Pedir numero mediante prompt y sumarle otro numero en cada repeticion,realizando una salida por cada resultado.
 
-let numberOne = Number(prompt('Ingrese un numero'))
+let numberOne = Number(prompt('Ingrese un numero'));
+let numberThree = Number(prompt('Ingrese la cantidad de numeros que quisera sumarle'))
+let addition = numberOne;
 
-for(let i=0 ; i < 3; i++){
-    let numberTwo = Number(prompt('Ingrese otro numero'))
-    let addition = numberOne + numberTwo
+for(let i=0 ; i < numberThree; i++){
+    let numberTwo = Number(prompt('Ingrese otro numero para sumar'))
+    addition += numberTwo
 
-    console.log('El resultado de ' + numberOne + ' + ' + numberTwo + ' es: ' + addition);
+    console.log('El resultado es ' + addition);
 }
 
 
-// Pedir un texto mediante prompt, concatenar un valor en cada repeticion, realizando una salida por cada resultado, hasta que se ingresa “ESC”.
+// // Pedir un texto mediante prompt, concatenar un valor en cada repeticion, realizando una salida por cada resultado, hasta que se ingresa “ESC”.
 
-let textOne = prompt("Ingrese su nombre ");
+let textOne = prompt("Ingrese su nombre de usuario ");
 let textTwo= "";
+let fullSentence = '';
 
 do{
-    textTwo = prompt ("Ingrese un pais que quisiera conocer o escriba ESC para salir")
+    textTwo = prompt ("Ingrese, de a uno a la vez, el nombre de los productos que quisiera solicitar o ingrese ESC para finalizar")
 
     if(textTwo == "ESC"){
-      alert('Gracias por participar.')
+      alert('Gracias por enviar su solicitud.')
     }
     else{
-       console.log(textOne + ' quisiera viajar a ' + textTwo + '.')
+       fullSentence = fullSentence + ' ' + textTwo ;
+       console.log('Le usuario ' + textOne + ' solicita los siguientes productos : ' + fullSentence)
     }
    
 }while(textTwo != "ESC")
@@ -31,13 +35,13 @@ do{
 
 
 
-// Pedir un numero por prompt, repetir la salida del mensaje “Hola” la cantidad de veces ingresada.
+// // Pedir un numero por prompt, repetir la salida del mensaje “Hola” la cantidad de veces ingresada.
 
-let numberOfRepetitions = Number(prompt('Ingrese la cantidad de veces que desea ver el mensaje'))
+// let numberOfRepetitions = Number(prompt('Ingrese la cantidad de veces que desea ver el mensaje'))
 
-for (let i = 0; i < numberOfRepetitions ; i++){
+// for (let i = 0; i < numberOfRepetitions ; i++){
 
-    console.log("Hola")
-}
+//     console.log("Hola")
+// }
 
 
