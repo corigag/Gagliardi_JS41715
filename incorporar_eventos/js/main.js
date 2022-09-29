@@ -4,7 +4,7 @@ const products = [
         name:'Shampoo Solido',
         image: "images/muestra.jpg",
         price: 1300,
-        modalidad: 'No retornable',
+        category: 'Higiene',
         stock: 60,
         amount: 1,
     },
@@ -13,7 +13,7 @@ const products = [
         name: 'Acondicionador Solido',
         image: "images/muestra.jpg",
         price: 1200,
-        modalidad: 'No retornable',
+        category: 'Higiene',
         stock: 50,
         amount: 1,
     },
@@ -22,7 +22,7 @@ const products = [
         name: 'Crema Facial',
         image: "images/muestra.jpg",
         price: 1500,
-        modalidad: 'Retornable',
+        category: 'Cremas',
         stock: 30,
         amount: 1,
     },
@@ -31,7 +31,7 @@ const products = [
         name: 'Repelente Natural',
         image: "images/muestra.jpg",
         price: 1000,
-        modalidad: 'Retornable',
+        category: 'Verano',
         stock: 10,
         amount: 1,
     },
@@ -40,7 +40,7 @@ const products = [
         name: 'Crema Medicinal',
         image: "images/muestra.jpg",
         price: 1500,
-        modalidad: 'Retornable',
+        category: 'Cremas',
         stock: 15,
         amount: 1,
     },
@@ -49,7 +49,7 @@ const products = [
         name: 'Aceite Bronceador',
         image: "images/muestra.jpg",
         price: 1400,
-        modalidad: 'Retornable',
+        category: 'Verano',
         stock: 15,
         amount: 1,
     },
@@ -58,7 +58,7 @@ const products = [
         name: 'Desodorante Natural',
         image: "images/muestra.jpg",
         price: 900,
-        modalidad: 'No Retornable',
+        category: 'Higiene',
         stock: 15,
         amount: 1,
     },
@@ -66,8 +66,8 @@ const products = [
         id:8,
         name: 'Protector Solar',
         image: "images/muestra.jpg",
-        price: 15000,
-        modalidad: 'Retornable',
+        price: 1500,
+        category: 'Verano',
         stock: 15,
         amount: 1,
     }
@@ -78,10 +78,11 @@ let cart = [];
 
 //capturo elementos del HTML que voy a necesitar
 const mainContainer = document.getElementById('mainContainer');
-const offcanvasCart = document.querySelector('.offcanvas-body');
+const offcanvasCart = document.querySelector('#cartBody');
+const priceCartItem = document.getElementById('priceCartItem');
+const detailsCartItem= document.getElementById('detailsCartItem');
 
-
-const renderProducts = () => {
+const renderProducts = (products) => {
     //agrego clases a div principal tienda
     
     mainContainer.classList.add('container-xxl');
@@ -105,7 +106,7 @@ const renderProducts = () => {
         <div class="card-body">
         <h5 class="card-title">${element.name}</h5>
         
-        <p class="card-text valor">${element.price}</p>
+        <p class="card-text valor">$${element.price}</p>
         <a href="#" class="btn btn-primary addToCart id="${element.id} ">Añadir al carrito</a>
         </div>
         </div>
@@ -122,7 +123,7 @@ const renderProducts = () => {
     })
 }
 
-renderProducts();
+renderProducts(products);
 
 const addToCart = (id) => {
 
@@ -141,7 +142,7 @@ const addToCart = (id) => {
         newItem.amount = 1;
 
         cart.push(newItem);
-        alert(`El producto ${newItem.name} ha sido añadido al carrito`);
+        //alert(`El producto ${newItem.name} ha sido añadido al carrito`);
     }
 
     renderCart();
@@ -163,17 +164,20 @@ const renderCart = () =>{
 
     
     const cartContent = ` 
-         <div id="contenedor-${element.name}" class= "py-2">
-            <img src=${element.image} alt="foto producto" width="100px" height="100px">
-        </div>
-        <div>
-            <ul>
-                <li>${element.name}</li>
-                <li>${element.price}</li>
-                <li ><input type="text" value=${element.amount} class="unidades"></li>
-            </ul>
-            
-            <button class="deleteBtn" id="${element.id}">Borrar</button>
+        <div class = "d-flex ">
+            <div id="contenedor-${element.name}" class= "py-2 px-2 ">
+                <img src=${element.image} alt="foto producto" width="100px" height="100px">
+            </div>
+            <div >
+                <ul class="list-unstyled py-1" id="detailsCartItem">
+                    <li>${element.name}</li>
+                    <li id="priceCartItem">$${element.price}</li>
+                    <input  type="text" value=${element.amount} class="unidades">
+                </ul>
+            </div>
+            <div>
+            </div>
+            <button class="btn deleteBtn" id="${element.id}"><img src="./images/iconoDelete.png" alt="icono basurero" id="icono_carrito"></button>
         </div>
 `
     cartItem.innerHTML += cartContent;
@@ -187,7 +191,7 @@ const renderCart = () =>{
     })
 
     emptyCart();
-    showTotal();
+    showTotal(cart);
     
 };
 
@@ -235,8 +239,7 @@ const deleteCartItem = (itemId) => {
 
 }
 
-
-const showTotal = () => {
+const showTotal = (cart) => {
 
     //suma total precios de productos en array carrito
     const total = cart.reduce((acc, el) => acc + (el.price * el.amount), 0)
@@ -245,8 +248,44 @@ const showTotal = () => {
     const divTotal = document.createElement('div')
     offcanvasCart.appendChild(divTotal);
     divTotal.innerHTML = `
-     <p> Total = $${total} </p>
+     <p class= "text-center"> Total = <span class= "fs-4"> $${total} </span> </p>
+     <div  >
+    <button class="btn btn-success " id="finishShopping">Finalizar compra</button>
+    </div>
     `
+    finishShopping();
+    setCartLocalStorage();
+    getCartLocalStorage();
     return total
 }
 
+const finishShopping = () => {
+
+    const finishShoppingBtn = document.querySelector("#finishShopping")
+    finishShoppingBtn.addEventListener('click' , () =>{
+        console.log("finalizar")
+    })
+}
+
+//guarda y recupera el carrito dentro del local storage
+const setCartLocalStorage = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+const getCartLocalStorage = () => {
+
+    const cartStorage = JSON.parse(localStorage.getItem('cart'));
+    return cartStorage
+}
+
+//ejecuta la funcion al cargar la ventana
+//si existe el carrito en storage lo parsea y lo guarda en carrito
+//ejecuta la funcion para mostrar el carrito
+window.onload = () => {
+    const storage = JSON.parse(localStorage.getItem('cart'));
+
+    if(storage){
+        cart = storage;
+        renderCart(cart)
+    }
+}
