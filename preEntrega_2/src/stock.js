@@ -1,0 +1,77 @@
+const products = [
+    {
+        id:1,
+        name:'Shampoo Solido',
+        image: "images/muestra.jpg",
+        price: 1300,
+        category: 'Higiene',
+        stock: 60,
+        amount: 1,
+    },
+    {
+        id: 2,
+        name: 'Acondicionador Solido',
+        image: "images/muestra.jpg",
+        price: 1200,
+        category: 'Higiene',
+        stock: 50,
+        amount: 1,
+    },
+    {
+        id:3,
+        name: 'Crema Facial',
+        image: "images/muestra.jpg",
+        price: 1500,
+        category: 'Cremas',
+        stock: 30,
+        amount: 1,
+    },
+    {
+        id:4,
+        name: 'Repelente Natural',
+        image: "images/muestra.jpg",
+        price: 1000,
+        category: 'Verano',
+        stock: 10,
+        amount: 1,
+    },
+    {
+        id:5,
+        name: 'Crema Medicinal',
+        image: "images/muestra.jpg",
+        price: 1500,
+        category: 'Cremas',
+        stock: 15,
+        amount: 1,
+    },
+    {
+        id:6,
+        name: 'Aceite Bronceador',
+        image: "images/muestra.jpg",
+        price: 1400,
+        category: 'Verano',
+        stock: 15,
+        amount: 1,
+    },
+    {
+        id:7,
+        name: 'Desodorante Natural',
+        image: "images/muestra.jpg",
+        price: 900,
+        category: 'Higiene',
+        stock: 15,
+        amount: 1,
+    },
+    {
+        id:8,
+        name: 'Protector Solar',
+        image: "images/muestra.jpg",
+        price: 1500,
+        category: 'Verano',
+        stock: 15,
+        amount: 1,
+    }
+   
+];
+
+export { products };
