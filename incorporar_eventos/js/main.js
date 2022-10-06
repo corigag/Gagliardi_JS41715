@@ -259,6 +259,7 @@ const showTotal = (cart) => {
     return total
 }
 
+//funcion para dirigir al formulario de compra (pendiente)
 const finishShopping = () => {
 
     const finishShoppingBtn = document.querySelector("#finishShopping")
