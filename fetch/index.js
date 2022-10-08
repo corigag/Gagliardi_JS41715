@@ -2,6 +2,7 @@ import { renderProducts } from "./app.js";
 import { products } from "./src/stock.js";
 import { renderCart } from "./src/cartFunctions.js";
 import { getCartLocalStorage } from "./src/storage.js"
+import { showProductsController } from "./src/showProductsController.js";
 
 const render = (products) => {
     const containerBanners = document.getElementById('containerBanners');
@@ -9,7 +10,9 @@ const render = (products) => {
     renderProducts(products)
 }
 
-document.addEventListener('DOMContentLoaded' , () => {
+document.addEventListener('DOMContentLoaded' , async () => {
+
+    const products = await showProductsController();
 
 const btnAllProducts = document.getElementById('btnAllProducts');
 btnAllProducts.addEventListener('click', () =>{

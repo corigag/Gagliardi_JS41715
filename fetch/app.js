@@ -1,5 +1,6 @@
 import { addToCart } from "./src/cartFunctions.js";
 
+
 const renderProducts = (products) => {
 
     const containerBtn = document.getElementById('containerBtn');
