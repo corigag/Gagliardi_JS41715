@@ -31,6 +31,8 @@ const renderCartCheckOut = () => {
     
 }
 
+renderCartCheckOut()
+
 const formData = () => {
 
     const continueBtn = document.getElementById('continueBtn')

@@ -1,4 +1,4 @@
-import { products } from "./stock.js";
+//import { products } from "./stock.js";
 import { getCartLocalStorage, setCartLocalStorage } from "./storage.js";
 
 

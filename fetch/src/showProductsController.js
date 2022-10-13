@@ -7,7 +7,7 @@ const showProductsController = async () => {
 
 
     } catch (error) {
-        console.log('Error: ',  error)
+        console.log('error')
         
     }
 }
