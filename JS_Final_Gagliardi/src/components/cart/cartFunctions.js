@@ -1,14 +1,14 @@
-//import { products } from "./stock.js";
-import { getCartLocalStorage, setCartLocalStorage } from "./storage.js";
 
-
+import { getCartLocalStorage, setCartLocalStorage } from "../storage/storage.js";
 
 let cart = getCartLocalStorage() || [];
 const offcanvasCart = document.querySelector('#cartBody');
 
-const addToCart = (id) => {
+const addToCart = async (id) => {
 
-    //busca coincidencia de producto en el array de productos
+    const response = await fetch ('./src/data/stock.json');
+    const products = await response.json();
+
     const newItem = products.find( element => element.id == id );
 
     //busca coincidencia de productos en el array carrito
@@ -61,27 +61,23 @@ const renderCart = (cart) =>{
     const cartItem = document.createElement('div');
 
     cartItem.classList.add('d-flex')
-    cartItem.classList.add('justify-content-around')
-    cartItem.classList.add('p-5')
+    cartItem.classList.add('justify-content-between')
+    cartItem.classList.add('p-1')
+    cartItem.classList.add('mx-3')
     cartItem.classList.add('text-decoration-none')
 
-    
     const cartContent = ` 
-        <div class = "d-flex ">
-            <div id="contenedor-${element.name}" class= "py-2 px-2 ">
-                <img src=${element.image} alt="foto producto" width="100px" height="100px">
-            </div>
-            <div >
-                <ul class="list-unstyled py-1" id="detailsCartItem">
-                    <li>${element.name}</li>
-                    <li id="priceCartItem">$${element.price}</li>
-                    <input  type="text" value=${element.amount} class="unidades">
-                </ul>
-            </div>
-            <div>
-            </div>
-            <button class="btn deleteBtn" id="${element.id}"><img src="./images/iconoDelete.png" alt="icono basurero" id="icono_carrito"></button>
+        <div class = "d-flex">
+            <ul class="list-unstyled py-1" id="detailsCartItem">
+                <li>${element.name}</li>
+                <li id="priceCartItem">$${element.price}</li>
+            </ul>
         </div>
+        <div>
+            <input  type="text" value=${element.amount} class="amount">
+            <button class="btn deleteBtn" id="${element.id}"><img src="public/images/iconoDelete.png" alt="icono basurero" id="icono_carrito"></button>
+        </div>
+        
 `
     cartItem.innerHTML += cartContent;
     offcanvasCart.appendChild(cartItem);
@@ -149,6 +145,23 @@ const deleteCartItem = (itemId) => {
 
 }
 
+const backToStoreBtn = () =>{
+
+    const backToStoreBtn = document.createElement('button');
+      backToStoreBtn.classList.add('btn');
+      backToStoreBtn.classList.add('btn-light');
+      backToStoreBtn.classList.add('mt-5')
+      backToStoreBtn.innerText = "Volver a la tienda"
+      
+      backToStoreBtn.addEventListener('click' , () => {
+          
+          window.location = '../../../index.html'
+      })
+
+      return backToStoreBtn
+}
+
+
 //crea funcionalidad y boton vaciar carrito
 const emptyCart = (cart) => {
     
@@ -164,6 +177,10 @@ const emptyCart = (cart) => {
         const emptyCartText = document.createElement('p')
         emptyCartText.innerText = "Su carrito de compras esta vacio"
         offcanvasCart.appendChild(emptyCartText) 
+
+        const backToStore = backToStoreBtn()
+     
+        offcanvasCart.appendChild(backToStore)
     }
 
     emptyCartBtn.addEventListener('click', () =>{
@@ -190,10 +207,14 @@ const emptyCart = (cart) => {
                 100,
                 350,
                 '#EFEBE7'
-                
-            )
+            ).then(() => {
+                window.location = 'index.html'
+            })
+           
+
             cart.length = 0;
-            renderCart(cart);  
+            setCartLocalStorage(cart); 
+            renderCart(cart)
         }
     })
  
@@ -209,18 +230,50 @@ const showTotal = (cart) => {
     const divTotal = document.createElement('div')
     offcanvasCart.appendChild(divTotal);
     divTotal.innerHTML = `
-     <p class= "text-center"> Total = <span class= "fs-4"> $${total} </span> </p>
-     <div  >
-    <button class="btn btn-success " id="finishShopping"><a class="text-decoration-none" href="../src/form.html" target="_blank">Finalizar compra</a></button>
+     <p class= "text-center  mt-4"> Total = <span class= "fs-4"> $${total} </span> </p>
+     <div class="position-relative">
+    <button class="btn btn-success position-absolute top-50 start-50 translate-middle mt-4" id="finishShopping">Finalizar compra</a></button>
     </div>
     `
     
     setCartLocalStorage(cart);
+    finishShopping();
     
     
     return total
 }
 
+const finishShopping = () => {
+
+    const btnFinishShopping = document.getElementById('finishShopping')
+    
+    if(cart.length === 0 ){
+            
+            btnFinishShopping.disabled = true
+            btnFinishShopping.style.opacity = 0.7;
+         }
+    
+
+    btnFinishShopping.addEventListener('click', () =>{
+
+        Swal.fire({
+            title: 'Quiere finalizar su compra?',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButton: 'btn btn-danger',
+            cancelButtonText: 'No, continuar comprando!',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, redirigirme al checkout'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = "../src/components/form/form.html"
+            }
+          })
+          
+    })
+
+}
 
 
-export { addToCart , renderCart , showTotal , cart}
+export { addToCart , renderCart , showTotal , cart, backToStoreBtn, emptyCart}

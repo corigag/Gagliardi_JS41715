@@ -1,6 +1,6 @@
 const showProductsController = async () => {
     try {
-        const response = await fetch ('./src/stock.json');
+        const response = await fetch ('./src/data/stock.json');
         const data = await response.json();
 
         return data
